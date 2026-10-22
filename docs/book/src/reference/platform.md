@@ -140,8 +140,11 @@ Image plugin generates. ([More info](../plugins/available/deploy-image-plugin-v1
 
 ## Producing projects that support multiple platforms
 
-You can use [`docker buildx`][buildx] to cross-compile via emulation ([QEMU](https://www.qemu.org/)) to build the manager image.
-See that projects scaffold with the latest versions of Kubebuilder have the Makefile target `docker-buildx`.
+Projects scaffolded with the latest versions of Kubebuilder have the Makefile target `docker-buildx`, which runs
+`docker build --platform=$(PLATFORMS) --push` to build and push a multi-platform manager image.
+It requires a container engine that can build multi-platform images, such as Docker with the
+[containerd image store][containerd-store] enabled (see [multi-platform builds][multi-platform]).
+Platforms that differ from the host are built via emulation ([QEMU](https://www.qemu.org/)).
 
 **Example of Usage**
 
@@ -220,4 +223,6 @@ end up labeled with ` kubernetes.io/os=linux`
 [node-affinity]: https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#node-affinity
 [docker-manifest]: https://docs.docker.com/engine/reference/commandline/manifest/
 [buildx]: https://docs.docker.com/build/buildx/
+[containerd-store]: https://docs.docker.com/engine/storage/containerd/
+[multi-platform]: https://docs.docker.com/build/building/multi-platform/
 [goreleaser-buildx]: https://goreleaser.com/customization/docker/#use-a-specific-builder-with-docker-buildx
